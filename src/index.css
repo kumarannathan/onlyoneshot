@@ -1,0 +1,94 @@
+/* ============== ONLY ONE SHOT STUDIOS ============== */
+/* fonts loaded via <link> in index.html: Fahkwang, Montserrat, Noto Sans, Plus Jakarta Sans */
+
+:root {
+  --bg: #050505;
+  --bg-2: #0c0b0b;
+  --ink: #f5f1ec;
+  --paper: #efece6;        /* light brutalist panels */
+  --coal: #0a0909;         /* ink on paper */
+  --muted: #8c847e;
+  --red: #ec3b2b;          /* minimal vermillion accent */
+  --grain-opacity: 0.05;
+
+  --display: 'Fahkwang', 'Noto Sans', serif;            /* titles */
+  --body: 'Plus Jakarta Sans', 'Noto Sans', sans-serif; /* body */
+  --mono: 'Montserrat', sans-serif;                     /* small labels */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: default;
+  scroll-snap-type: y mandatory;
+}
+
+::selection { background: var(--red); color: #fff; }
+
+a { color: inherit; text-decoration: none; }
+
+img { display: block; max-width: 100%; }
+
+/* film grain overlay across everything */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 0.6s steps(2) infinite;
+}
+@keyframes grainShift {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(-4%, 3%); }
+  100% { transform: translate(2%, -2%); }
+}
+
+/* subtle vignette */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 35%, transparent 40%, rgba(0,0,0,0.55) 100%);
+}
+
+/* ---------- shared layout ---------- */
+.wrap { width: min(1200px, 92vw); margin-inline: auto; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  text-transform: lowercase;
+  color: var(--red);
+}
+
+.section { position: relative; padding: clamp(80px, 14vh, 180px) 0; }
+
+/* reveal-on-scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html, body { scroll-snap-type: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .grain { animation: none; }
+}
