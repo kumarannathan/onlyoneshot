@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom'
+import { useBooking } from './BookingContext'
 
 export default function BookMark({ className = '', service = '' }) {
-  const to = service
-    ? `/book?service=${encodeURIComponent(service.toLowerCase())}`
-    : '/book'
+  const { openBooking } = useBooking()
 
   return (
-    <Link to={to} className={`book-mark ${className}`.trim()}>
+    <button
+      type="button"
+      className={`book-mark ${className}`.trim()}
+      onClick={() => openBooking(service)}
+    >
       <span className="book-mark__label">book</span>
       <span className="book-mark__arrow" aria-hidden="true">→</span>
-    </Link>
+    </button>
   )
 }

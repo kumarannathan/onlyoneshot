@@ -92,3 +92,7 @@ img { display: block; max-width: 100%; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .grain { animation: none; }
 }
+
+@media (max-width: 768px) {
+  html, body { scroll-snap-type: none; }
+}

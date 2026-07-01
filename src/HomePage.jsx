@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import Shuffle from './Shuffle'
 import SideRays from './SideRays'
 import SiteLayout from './SiteLayout'
+import BookingModal from './BookingModal'
 import BookMark from './BookMark'
 import { SERVICES } from './siteData'
+import { useSiteMedia } from './SiteMediaContext'
 
 function useReveal() {
   useEffect(() => {
@@ -167,14 +169,21 @@ const SERVICE_VIZ = {
   },
 }
 
-function ServiceRepeater({ service, align }) {
+function ServiceRepeater({ service, align, videoSrc }) {
   const viz = SERVICE_VIZ[service.title]
 
   return (
     <article className={`service reveal service--${align}`} id={service.title.toLowerCase()}>
-      <video className="service__bg" autoPlay muted loop playsInline poster="/assets/hero.jpg">
-        <source src="/assets/header.mp4" type="video/mp4" />
-      </video>
+      <video
+        key={videoSrc}
+        className="service__bg"
+        src={videoSrc}
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/assets/hero.jpg"
+      />
       <SideRays className="service__viz" {...viz} />
       <div className="service__shade" aria-hidden="true" />
       <div className="service__panel">
@@ -189,6 +198,7 @@ export default function HomePage() {
   const [loaded, setLoaded] = useState(false)
   const loaderLogoRef = useRef(null)
   const mediaRef = useRef(null)
+  const siteMedia = useSiteMedia()
   useReveal()
   useParallax(mediaRef, 0.18)
 
@@ -229,6 +239,8 @@ export default function HomePage() {
 
   return (
     <SiteLayout>
+      <BookingModal />
+
       <div className={`loader ${loaded ? 'done' : ''}`}>
         <img
           ref={loaderLogoRef}
@@ -241,15 +253,15 @@ export default function HomePage() {
       <header className="hero" id="home">
         <div className="hero__media" ref={mediaRef}>
           <video
+            key={siteMedia.hero}
             className="hero__video"
+            src={siteMedia.hero}
             autoPlay
             muted
             loop
             playsInline
             poster="/assets/hero.jpg"
-          >
-            <source src="/assets/header.mp4" type="video/mp4" />
-          </video>
+          />
         </div>
 
         <div className="hero__center">
@@ -278,7 +290,12 @@ export default function HomePage() {
 
       <section id="services" className="services">
         {SERVICES.map((s, i) => (
-          <ServiceRepeater key={s.n} service={s} align={i % 2 === 0 ? 'left' : 'right'} />
+          <ServiceRepeater
+            key={s.n}
+            service={s}
+            align={i % 2 === 0 ? 'left' : 'right'}
+            videoSrc={siteMedia[s.title.toLowerCase()] || siteMedia.hero}
+          />
         ))}
       </section>
 

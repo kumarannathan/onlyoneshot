@@ -7,6 +7,16 @@
   max-width: 720px;
 }
 
+@media (max-width: 640px) {
+  .booking {
+    padding-top: clamp(88px, 12vh, 110px);
+  }
+
+  .booking__title {
+    font-size: clamp(2.2rem, 14vw, 3.5rem);
+  }
+}
+
 .booking__back {
   display: inline-block;
   margin-bottom: clamp(28px, 5vw, 48px);
@@ -49,6 +59,7 @@
 }
 
 .booking__form,
+.booking__form-wrap,
 .booking__success {
   border: 2px solid rgba(245, 241, 236, 0.18);
   border-radius: clamp(16px, 2.5vw, 24px);

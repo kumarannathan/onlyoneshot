@@ -8,7 +8,8 @@ export const SERVICES = [
 export const MENU_ITEMS = [
   { label: 'Home', ariaLabel: 'Go to the top', link: '/' },
   { label: 'Services', ariaLabel: 'Studio services', link: '/#services' },
-  { label: 'Book', ariaLabel: 'Book a session', link: '/book' },
+  { label: 'Book', ariaLabel: 'Book a session', link: '/#book' },
+  { label: 'Members', ariaLabel: 'Member media portal', link: '/members' },
   { label: 'Contact', ariaLabel: 'Get in touch', link: '/#contact' },
 ]
 

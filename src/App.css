@@ -89,8 +89,8 @@
 }
 .badge--sticky {
   position: fixed;
-  top: clamp(18px, 2.5vw, 28px);
-  left: clamp(18px, 3vw, 32px);
+  top: max(clamp(18px, 2.5vw, 28px), env(safe-area-inset-top));
+  left: max(clamp(18px, 3vw, 32px), env(safe-area-inset-left));
   z-index: 101;
   pointer-events: auto;
 }
@@ -374,6 +374,7 @@
   justify-content: center;
   gap: 0.45em;
   padding: 0.34em 0.76em;
+  min-height: 44px;
   background: #fff;
   color: #111;
   font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
@@ -382,9 +383,11 @@
   font-size: clamp(0.5rem, 0.8vw, 0.6rem);
   letter-spacing: 0.08em;
   line-height: 1;
+  border: none;
   border-radius: 5px;
   white-space: nowrap;
   text-decoration: none;
+  cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .book-mark:hover {
@@ -893,4 +896,131 @@
   color: var(--red);
   background: none;
   border: none;
+}
+
+/* =================================================================
+   MOBILE — responsive layout & touch-friendly UI
+   ================================================================= */
+@media (max-width: 768px) {
+  .hero__center {
+    padding: 16px 16px 96px;
+    justify-content: center;
+  }
+
+  .hero__wordmark {
+    white-space: normal;
+    font-size: clamp(1.5rem, 8.8vw, 2.75rem);
+    line-height: 0.95;
+    max-width: 100%;
+  }
+
+  .hero__studio {
+    display: block;
+    margin-left: 0;
+    margin-top: 0.12em;
+    font-size: 0.38em;
+  }
+
+  .strip {
+    bottom: max(3%, env(safe-area-inset-bottom));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+
+  .strip__item {
+    padding: 8px 12px;
+  }
+
+  .strip__txt {
+    gap: 8px;
+  }
+
+  .strip__txt h3 {
+    font-size: clamp(0.78rem, 3.2vw, 0.95rem);
+  }
+
+  .book-mark {
+    font-size: clamp(0.62rem, 2.8vw, 0.72rem);
+    min-height: 44px;
+    padding: 0.42em 0.88em;
+  }
+
+  .services {
+    padding: 12px 12px 16px;
+    gap: 12px;
+  }
+
+  .service {
+    height: calc(100svh - 24px);
+    min-height: calc(100svh - 24px);
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+
+  .service__panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 28px 20px 32px;
+  }
+
+  .service__title {
+    max-width: 100%;
+    font-size: clamp(1.85rem, 11vw, 3.2rem);
+  }
+
+  .service__book {
+    align-self: flex-start;
+    margin-bottom: 0;
+  }
+
+  .service__book.book-mark {
+    font-size: clamp(0.65rem, 2.8vw, 0.76rem);
+  }
+
+  .footer {
+    padding-bottom: max(clamp(36px, 6vw, 56px), env(safe-area-inset-bottom));
+  }
+
+  .staggered-menu-wrapper.fixed-wrapper .staggered-menu-header {
+    padding-top: max(clamp(18px, 2.5vw, 28px), env(safe-area-inset-top));
+    padding-right: max(clamp(20px, 4vw, 46px), env(safe-area-inset-right));
+    padding-left: max(clamp(20px, 4vw, 46px), env(safe-area-inset-left));
+  }
+
+  .staggered-menu-panel,
+  .sm-prelayers {
+    height: min(72svh, 480px);
+    max-height: min(72svh, 480px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 3.2em clamp(16px, 4vw, 24px) 1.2em clamp(56px, 16vw, 72px);
+  }
+
+  .staggered-menu-panel::after {
+    display: none;
+  }
+
+  .sm-panel-item {
+    font-size: clamp(1.15rem, 4.5vw, 1.55rem);
+  }
+
+  .badge {
+    width: 54px;
+    height: 54px;
+  }
+
+  .badge__emblem {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__center {
+    padding-bottom: 88px;
+  }
+
+  .strip__txt h3 {
+    font-size: 0.76rem;
+  }
 }

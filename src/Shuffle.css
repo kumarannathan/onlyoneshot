@@ -12,6 +12,13 @@
   visibility: visible;
 }
 
+@media (max-width: 768px) {
+  .hero__shuffle.shuffle-parent,
+  .shuffle-parent {
+    white-space: normal;
+  }
+}
+
 .shuffle-char-wrapper {
   display: inline-block;
   overflow: hidden;
