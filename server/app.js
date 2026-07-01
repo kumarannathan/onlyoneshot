@@ -109,6 +109,8 @@ export function createPortalApp({ serveStatic = false } = {}) {
     const out = { ...defaults }
     for (const row of rows) {
       if (row.file_name) {
+        const filePath = path.join(uploadsDir, row.file_name)
+        if (!fs.existsSync(filePath)) continue
         const version = row.updated_at ? `?v=${encodeURIComponent(row.updated_at)}` : ''
         out[row.slot_id] = `/uploads/${row.file_name}${version}`
       }
@@ -389,11 +391,31 @@ export function createPortalApp({ serveStatic = false } = {}) {
     res.json({ ok: true, totalDurationSeconds: getTotalDuration() })
   })
 
-  if (serveStatic && fs.existsSync(distDir)) {
-    app.use(express.static(distDir))
-    app.get(/^(?!\/api|\/uploads).*/, (_req, res) => {
-      res.sendFile(path.join(distDir, 'index.html'))
-    })
+  if (serveStatic) {
+    const publicAssetsDir = path.join(rootDir, 'public', 'assets')
+    if (fs.existsSync(publicAssetsDir)) {
+      app.use('/assets', express.static(publicAssetsDir, {
+        setHeaders(res, filePath) {
+          if (filePath.endsWith('.mp4')) {
+            res.setHeader('Content-Type', 'video/mp4')
+            res.setHeader('Accept-Ranges', 'bytes')
+          }
+        },
+      }))
+    }
+    if (fs.existsSync(distDir)) {
+      app.use(express.static(distDir, {
+        setHeaders(res, filePath) {
+          if (filePath.endsWith('.mp4')) {
+            res.setHeader('Content-Type', 'video/mp4')
+            res.setHeader('Accept-Ranges', 'bytes')
+          }
+        },
+      }))
+      app.get(/^(?!\/api|\/uploads).*/, (_req, res) => {
+        res.sendFile(path.join(distDir, 'index.html'))
+      })
+    }
   }
 
   app.use((err, _req, res, _next) => {

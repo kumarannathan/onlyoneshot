@@ -22,7 +22,14 @@ export function SiteMediaProvider({ children }) {
 
   const refresh = useCallback(() => {
     return fetchPublicMedia()
-      .then((data) => setMedia({ ...DEFAULTS, ...data }))
+      .then((data) => {
+        const merged = { ...DEFAULTS }
+        for (const key of Object.keys(DEFAULTS)) {
+          const url = data?.[key]
+          if (typeof url === 'string' && url.length > 0) merged[key] = url
+        }
+        setMedia(merged)
+      })
       .catch(() => setMedia(DEFAULTS))
   }, [])
 
