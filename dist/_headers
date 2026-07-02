@@ -1,4 +1,10 @@
-/assets/*
+/assets/*.mp4
   Content-Type: video/mp4
   Accept-Ranges: bytes
+  Cache-Control: public, max-age=604800
+
+/assets/*.jpg
+  Cache-Control: public, max-age=604800
+
+/assets/*.png
   Cache-Control: public, max-age=604800
